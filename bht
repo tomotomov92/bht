@@ -162,6 +162,8 @@ function SMART_check {
     typeset _file=$1
     typeset -i _5_Reallocated_Sector_Ct
     typeset -i _9_Power_On_Hours
+    typeset -i _190_Airflow_Temperature_Cel
+    typeset -i _194_Temperature_Celsius
     typeset -i _200_Multi_Zone_Error_Rate
     typeset _power_on_time
     typeset _hdd_type=$(print_HDD_type $_file)
@@ -170,9 +172,13 @@ function SMART_check {
     if [[ $_hdd_type == "SATA" ]] ; then
 	_5_Reallocated_Sector_Ct=$(awk '$1=="5" && $2=="Reallocated_Sector_Ct" {print $10}' $_file)
 	_9_Power_On_Hours=$(awk '$1=="9" && $2=="Power_On_Hours" {print $10}' $_file)
+	_190_Airflow_Temperature_Cel=$(awk '$1=="190" && $2=="Airflow_Temperature_Cel" {print $10}' $_file)
+	_194_Temperature_Celsius=$(awk '$1=="194" && $2=="Temperature_Celsius" {print $10}' $_file)
 	_200_Multi_Zone_Error_Rate=$(awk '$1=="200" && $2=="Multi_Zone_Error_Rate" {print $10}' $_file)
 	print "SMART:[Reallocated_Sector_Ct=$_5_Reallocated_Sector_Ct]"
 	print "SMART:[Power_On_Hours=$_9_Power_On_Hours]"
+	print "SMART:[Airflow_Temperature_Cel=$_190_Airflow_Temperature_Cel]"
+	print "SMART:[Temperature_Celsius=$_194_Temperature_Celsius]"
 	print "SMART:[Multi_Zone_Error_Rate=$_200_Multi_Zone_Error_Rate]"
     elif [[ $_hdd_type == "SAS" ]] ; then
 	_power_on_time=$(awk '$0~/power on time/ {print $6}' $_file)
